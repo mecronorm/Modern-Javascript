@@ -21,8 +21,8 @@ async function createCard(data, i){
     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const container = document.querySelector('.container');
 
-    const d = new Date()
-    const dow = weekdays[(d.getDay() + i) % 7]
+    const date = new Date()
+    const dayOfWeek = weekdays[(date.getDay() + i) % 7]
     
     const card = document.createElement('container');
     card.classList.add("card");
@@ -45,7 +45,7 @@ async function createCard(data, i){
     card.appendChild(contentBox);
     
     const dowContentBeforeSliderAnimation = document.createElement("h2");
-    dowContentBeforeSliderAnimation.innerHTML = dow;
+    dowContentBeforeSliderAnimation.innerHTML = dayOfWeek;
     contentBox.appendChild(dowContentBeforeSliderAnimation);
     
     const tempDescription = document.createElement("h4");
@@ -93,25 +93,27 @@ async function createCards(data){
 
 async function lookForError(data){
     if (data.error) {
-        return false ,alert("Hey are you sure you are not holding up your map upside down?")
+        alert("Hey are you sure you are not holding up your map upside down?")
+    } else{
+        return true
     }
 }
 
 function resetWeatherSite(){
     const container = document.querySelector(".container")
     while (container.lastChild) {
-        container.removeChild(container.lastChild)
+        container.removeChild(container.firstChild)
+        console.log(container);
     }
 }
 
 async function startWeatherSite(){
     const data = await getWeatherData()
     resetWeatherSite()
-    if (lookForError(data) === false){
-        return
-    }       
-    createCityAndCountryName(data)
-    createCards(data)
+    if (await lookForError(data)){
+        createCityAndCountryName(data)
+        createCards(data)
+    }
 }
 
 inputField.addEventListener('keyup',async function(event) {
