@@ -2,14 +2,13 @@ import API from "./config.js";
 
 const button = document.querySelector('#submit-search');
 const inputField = document.querySelector('#cityName');
-const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 async function getWeatherData(){
     const inputField = document.querySelector('#cityName');
     const theNameOfTheCity = inputField.value
     const response = await fetch("http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + theNameOfTheCity + "&days=7&aqi=no&alerts=no")
     const weatherData = await response.json()
-
+    
     return weatherData
 }
 
@@ -19,6 +18,7 @@ async function createCityAndCountryName(data) {
 }
 
 async function createCard(data, i){
+    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const container = document.querySelector('.container');
 
     const d = new Date()
@@ -120,6 +120,6 @@ inputField.addEventListener('keyup',async function(event) {
     }
 })
 
-button.addEventListener('click', function() {
+button.addEventListener('click', () => {
     startWeatherSite()
 })
