@@ -18,73 +18,76 @@ async function createCityAndCountryName(data) {
     cityNameContainer.textContent = data.location.name + ", " + data.location.country
 }
 
+async function createCard(data, i){
+    const container = document.querySelector('.container');
+
+    const d = new Date()
+    const dow = weekdays[(d.getDay() + i) % 7]
+    
+    const card = document.createElement('container');
+    card.classList.add("card");
+        
+    if (i === 0) card.classList.add("main-card");
+    
+    container.appendChild(card);
+    
+    const initialContentBeforeSlideAnimation = document.createElement('container');
+    initialContentBeforeSlideAnimation.classList.add("imgBx");
+    card.appendChild(initialContentBeforeSlideAnimation);
+        
+    const cardImg = document.createElement('img');
+    cardImg.src = data.forecast.forecastday[i].day.condition.icon;
+    cardImg.alt = "Icon describing the following weather: " + data.forecast.forecastday[i].day.condition.text;
+    initialContentBeforeSlideAnimation.appendChild(cardImg);
+        
+    const contentBox = document.createElement("container");
+    contentBox.classList.add("contentBx");
+    card.appendChild(contentBox);
+    
+    const dowContentBeforeSliderAnimation = document.createElement("h2");
+    dowContentBeforeSliderAnimation.innerHTML = dow;
+    contentBox.appendChild(dowContentBeforeSliderAnimation);
+    
+    const tempDescription = document.createElement("h4");
+    tempDescription.innerHTML = data.forecast.forecastday[i].day.condition.text;
+    contentBox.appendChild(tempDescription);
+    
+    const currentTempBox = document.createElement("container");
+    currentTempBox.classList.add("color");
+    contentBox.appendChild(currentTempBox)
+    
+    const currentTempHeader = document.createElement("h3");
+    currentTempHeader.innerHTML = "Temp:"
+    currentTempBox.appendChild(currentTempHeader);
+    
+    const currentTemp = document.createElement("span");
+    currentTemp.classList.add("current-temp");
+
+    currentTemp.innerHTML = data.forecast.forecastday[i].day.avgtemp_c + "°C";
+    currentTempBox.appendChild(currentTemp);
+
+    const minMax = document.createElement("container");
+    minMax.classList.add("details");
+    contentBox.appendChild(minMax);
+
+    const minMaxTempHeader = document.createElement("h3");
+    minMaxTempHeader.innerHTML = "More:"
+    minMax.appendChild(minMaxTempHeader);
+
+    const minTemp = document.createElement("span");
+    minTemp.classList.add("min-temp")
+    minTemp.innerHTML = data.forecast.forecastday[i].day.mintemp_c  + "°C";
+    minMax.appendChild(minTemp);
+
+    const maxTemp = document.createElement("span");
+    maxTemp.classList.add("max-temp")
+    maxTemp.innerHTML = data.forecast.forecastday[i].day.maxtemp_c + "°C";
+    minMax.appendChild(maxTemp); 
+}
+
 async function createCards(data){
     for(let i= 0; i < 5; i++) {
-
-        const container = document.querySelector('.container');
-
-        const d = new Date()
-        const dow = weekdays[(d.getDay() + i) % 7]
-    
-        const card = document.createElement('container');
-        card.classList.add("card");
-        
-        if (i === 0) card.classList.add("main-card");
-    
-        container.appendChild(card);
-    
-        const initialContentBeforeSlideAnimation = document.createElement('container');
-        initialContentBeforeSlideAnimation.classList.add("imgBx");
-        card.appendChild(initialContentBeforeSlideAnimation);
-        
-        const cardImg = document.createElement('img');
-        cardImg.src = data.forecast.forecastday[i].day.condition.icon;
-        cardImg.alt = "Icon describing the following weather: " + data.forecast.forecastday[i].day.condition.text;
-        initialContentBeforeSlideAnimation.appendChild(cardImg);
-        
-        const contentBox = document.createElement("container");
-        contentBox.classList.add("contentBx");
-        card.appendChild(contentBox);
-    
-        const dowContentBeforeSliderAnimation = document.createElement("h2");
-        dowContentBeforeSliderAnimation.innerHTML = dow;
-        contentBox.appendChild(dowContentBeforeSliderAnimation);
-    
-        const tempDescription = document.createElement("h4");
-        tempDescription.innerHTML = data.forecast.forecastday[i].day.condition.text;
-        contentBox.appendChild(tempDescription);
-    
-        const currentTempBox = document.createElement("container");
-        currentTempBox.classList.add("color");
-        contentBox.appendChild(currentTempBox)
-    
-        const currentTempHeader = document.createElement("h3");
-        currentTempHeader.innerHTML = "Temp:"
-        currentTempBox.appendChild(currentTempHeader);
-    
-        const currentTemp = document.createElement("span");
-        currentTemp.classList.add("current-temp");
-
-        currentTemp.innerHTML = data.forecast.forecastday[i].day.avgtemp_c + "°C";
-        currentTempBox.appendChild(currentTemp);
-
-        const minMax = document.createElement("container");
-        minMax.classList.add("details");
-        contentBox.appendChild(minMax);
-
-        const minMaxTempHeader = document.createElement("h3");
-        minMaxTempHeader.innerHTML = "More:"
-        minMax.appendChild(minMaxTempHeader);
-
-        const minTemp = document.createElement("span");
-        minTemp.classList.add("min-temp")
-        minTemp.innerHTML = data.forecast.forecastday[i].day.mintemp_c  + "°C";
-        minMax.appendChild(minTemp);
-
-        const maxTemp = document.createElement("span");
-        maxTemp.classList.add("max-temp")
-        maxTemp.innerHTML = data.forecast.forecastday[i].day.maxtemp_c + "°C";
-        minMax.appendChild(maxTemp); 
+        createCard(data, i)
     }
 }
 
@@ -120,13 +123,3 @@ inputField.addEventListener('keyup',async function(event) {
 button.addEventListener('click', function() {
     startWeatherSite()
 })
-
-// This is a weather web application made for educational purposes. Please do not commercialize this project in any way whatsoever.
-// Made by a BeCode technical coach whom had a lot of fun making "bad code", and improved by the very learners of this class.
-// I want to mention that this is a fully working app, but can be optimized by: 
-// cleaning up, 
-// refactoring the code, 
-// renaming the variables, 
-// removing redundant code,
-// removing unnecessary comments,
-// storing information into variables for easier and more readable use 
