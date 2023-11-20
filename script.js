@@ -9,7 +9,14 @@ const cityNameContainer = document.querySelector('.city-info')
 // Weekdays listed in the order used by the Date object in javascript
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+async function getCitydata(){
+    const inputField = document.querySelector('#cityName');
+    const theNameOfTheCity = inputField.value
+    const response = await fetch("http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + theNameOfTheCity + "&days=7&aqi=no&alerts=no")
+    const weatherData = await response.json()
 
+    return weatherData
+}
 // add eventlistener to input field
 inputField.addEventListener('keyup', function(event) {
     // get the current value after the user submitted the city name
